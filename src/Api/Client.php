@@ -80,16 +80,31 @@ final class Client {
 		return $this->request( 'GET', 'payment_intents/' . rawurlencode( $intent_id ) );
 	}
 
-	public function refund( string $payment_id, string $reason = '', array $metadata = array() ) {
-		return $this->request(
-			'POST',
-			'refunds',
-			array(
-				'payment_id' => $payment_id,
-				'reason'     => $reason !== '' ? $reason : 'Unspecified',
-				'metadata'   => $metadata,
-			)
+	public function list_payments( array $params ) {
+		$query = array_filter(
+			$params,
+			static function ( $v ) {
+				return $v !== '' && $v !== null;
+			}
 		);
+		if ( ! isset( $query['limit'] ) ) {
+			$query['limit'] = 10;
+		}
+		if ( ! isset( $query['skip'] ) ) {
+			$query['skip'] = 0;
+		}
+		return $this->request( 'GET', 'payments', $query );
+	}
+
+	public function refund( string $payment_id, string $reason = '', array $metadata = array() ) {
+		$payload = array(
+			'payment_id' => $payment_id,
+			'reason'     => $reason !== '' ? $reason : 'Unspecified',
+		);
+		if ( ! empty( $metadata ) ) {
+			$payload['metadata'] = $metadata;
+		}
+		return $this->request( 'POST', 'refunds', $payload );
 	}
 
 	/**

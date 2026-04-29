@@ -14,6 +14,7 @@ class Gateway extends WC_Payment_Gateway {
 
 	public const META_SESSION_ID  = 'thawani_session_id';
 	public const META_INTENT_ID   = 'intent_id';
+	public const META_PAYMENT_ID  = '_thawani_payment_id';
 	public const USER_CUSTOMER_ID = '_thawani_customer_id';
 	public const USER_CARDS_CACHE = 'cards';
 
@@ -143,7 +144,25 @@ class Gateway extends WC_Payment_Gateway {
 				'type'        => 'checkbox',
 				'default'     => 'yes',
 			),
+			'webhook_url'           => array(
+				'title'             => __( 'Webhook URL', 'thawani' ),
+				'type'              => 'text',
+				'description'       => __( 'Optional. Paste this URL into your Thawani portal under Webhooks. Used to sync payment status if the customer closes the page before being redirected back.', 'thawani' ),
+				'default'           => home_url( '/wc-api/thawani_webhook' ),
+				'custom_attributes' => array( 'readonly' => 'readonly' ),
+			),
+			'webhook_secret'        => array(
+				'title'       => __( 'Webhook Secret', 'thawani' ),
+				'type'        => 'password',
+				'description' => __( 'Optional. If set, incoming webhook requests must include a matching Thawani-Signature header (HMAC-SHA256 of the raw body).', 'thawani' ),
+				'default'     => '',
+				'desc_tip'    => true,
+			),
 		);
+	}
+
+	public function webhook_secret(): string {
+		return (string) $this->get_option( 'webhook_secret' );
 	}
 
 	public function payment_fields(): void {
@@ -560,19 +579,146 @@ class Gateway extends WC_Payment_Gateway {
 			return new \WP_Error( 'thawani_refund', __( 'Order not found.', 'thawani' ) );
 		}
 
-		$session_id = (string) $order->get_meta( self::META_SESSION_ID );
-		if ( $session_id === '' ) {
-			return new \WP_Error( 'thawani_refund', __( 'No Thawani session id stored on this order.', 'thawani' ) );
+		$total       = (float) wc_format_decimal( $order->get_total(), wc_get_price_decimals() );
+		$refund_amt  = (float) wc_format_decimal( (string) $amount, wc_get_price_decimals() );
+
+		if ( $refund_amt <= 0 ) {
+			return new \WP_Error( 'thawani_refund', __( 'Refund amount must be greater than zero.', 'thawani' ) );
 		}
 
-		$response = $this->api()->refund( $session_id, (string) $reason );
-		if ( ! $response['success'] ) {
+		if ( abs( $refund_amt - $total ) > 0.0001 ) {
 			return new \WP_Error(
 				'thawani_refund',
-				$response['body']['description'] ?? __( 'Refund failed.', 'thawani' )
+				__( 'Thawani only supports full refunds. Please refund the full order total.', 'thawani' )
 			);
 		}
 
+		$logger     = $this->is_debug_mode() ? wc_get_logger() : null;
+		$payment_id = $this->resolve_refund_payment_id( $order, $logger );
+		if ( $payment_id === '' ) {
+			return new \WP_Error( 'thawani_refund', __( 'No Thawani payment id available for this order.', 'thawani' ) );
+		}
+
+		$metadata = array(
+			'order_id'  => (string) $order->get_id(),
+			'order_key' => (string) $order->get_order_key(),
+		);
+
+		if ( $logger ) {
+			$logger->debug(
+				'Refund request: ' . wp_json_encode( array( 'payment_id' => $payment_id, 'reason' => $reason, 'metadata' => $metadata ) ),
+				array( 'source' => 'thawani' )
+			);
+		}
+
+		$response = $this->api()->refund( $payment_id, (string) $reason, $metadata );
+
+		if ( $logger ) {
+			$logger->debug(
+				'Refund response: ' . wp_json_encode( array( 'code' => $response['code'] ?? 0, 'body' => $response['body'] ?? array() ) ),
+				array( 'source' => 'thawani' )
+			);
+		}
+
+		if ( ! $response['success'] ) {
+			return new \WP_Error(
+				'thawani_refund',
+				(string) ( $response['body']['description'] ?? __( 'Refund failed.', 'thawani' ) )
+			);
+		}
+
+		$refund_id = (string) ( $response['body']['data']['id'] ?? '' );
+		$order->add_order_note(
+			sprintf(
+				/* translators: 1: Thawani refund id, 2: reason */
+				__( 'Thawani refund processed (id: %1$s). Reason: %2$s', 'thawani' ),
+				$refund_id !== '' ? $refund_id : '-',
+				$reason !== '' ? $reason : __( 'Unspecified', 'thawani' )
+			)
+		);
+
 		return true;
+	}
+
+	private function resolve_refund_payment_id( WC_Order $order, $logger = null ): string {
+		$intent_id = (string) $order->get_meta( self::META_INTENT_ID );
+		if ( $intent_id !== '' ) {
+			$payment_id = $this->lookup_payment_id( array( 'payment_intent' => $intent_id ), $logger );
+			if ( $payment_id !== '' ) {
+				$order->update_meta_data( self::META_PAYMENT_ID, $payment_id );
+				$order->save();
+				return $payment_id;
+			}
+		}
+
+		$invoice = $this->resolve_checkout_invoice( $order, $logger );
+		if ( $invoice === '' ) {
+			return '';
+		}
+
+		$payment_id = $this->lookup_payment_id( array( 'checkout_invoice' => $invoice ), $logger );
+		if ( $payment_id !== '' ) {
+			$order->update_meta_data( self::META_PAYMENT_ID, $payment_id );
+			$order->save();
+		}
+
+		return $payment_id;
+	}
+
+	private function resolve_checkout_invoice( WC_Order $order, $logger = null ): string {
+		$session_id = (string) $order->get_meta( self::META_SESSION_ID );
+		if ( $session_id === '' ) {
+			return '';
+		}
+
+		$response = $this->api()->get_checkout_session( $session_id );
+		if ( $logger ) {
+			$logger->debug( 'Refund session lookup: ' . wp_json_encode( $response['body'] ?? array() ), array( 'source' => 'thawani' ) );
+		}
+
+		$data = $response['body']['data'] ?? array();
+		if ( isset( $data[0] ) ) {
+			$data = $data[0];
+		}
+
+		return (string) ( $data['invoice'] ?? '' );
+	}
+
+	private function lookup_payment_id( array $params, $logger = null ): string {
+		$response = $this->api()->list_payments( array_merge( array( 'limit' => 10, 'skip' => 0 ), $params ) );
+
+		if ( $logger ) {
+			$logger->debug(
+				'Payments lookup ' . wp_json_encode( $params ) . ': ' . wp_json_encode( $response['body'] ?? array() ),
+				array( 'source' => 'thawani' )
+			);
+		}
+
+		$rows = (array) ( $response['body']['data'] ?? array() );
+		if ( empty( $rows ) ) {
+			return '';
+		}
+
+		// Prefer a captured/succeeded, non-refunded payment.
+		foreach ( $rows as $row ) {
+			if ( ! is_array( $row ) ) {
+				continue;
+			}
+			$status   = strtolower( (string) ( $row['status'] ?? '' ) );
+			$refunded = ! empty( $row['refunded'] );
+			$is_paid  = in_array( $status, array( 'succeeded', 'success', 'paid', 'captured' ), true );
+			if ( $is_paid && ! $refunded && ! empty( $row['payment_id'] ) ) {
+				return (string) $row['payment_id'];
+			}
+		}
+
+		// Fall back to the first row that has a payment_id.
+		foreach ( $rows as $row ) {
+			if ( is_array( $row ) && ! empty( $row['payment_id'] ) ) {
+				return (string) $row['payment_id'];
+			}
+		}
+
+		return '';
 	}
 }

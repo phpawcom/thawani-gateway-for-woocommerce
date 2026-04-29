@@ -4,6 +4,7 @@ namespace S4D\Thawani;
 
 use S4D\Thawani\Ajax\CardController;
 use S4D\Thawani\Blocks\PaymentMethodIntegration;
+use S4D\Thawani\Webhook\EventController;
 use S4D\Thawani\Webhook\WebhookController;
 
 defined( 'ABSPATH' ) || exit;
@@ -42,6 +43,7 @@ final class Plugin {
 
 		( new CardController() )->register();
 		( new WebhookController() )->register();
+		( new EventController() )->register();
 	}
 
 	public function load_textdomain(): void {
