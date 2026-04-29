@@ -9,7 +9,9 @@
  * Tested up to:      6.8
  * Author:            The Source for Development
  * Author URI:        https://www.s4d.om
- * Text Domain:       thawani
+ * License:           GPL-2.0-or-later
+ * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
+ * Text Domain:       woocommerce-gateway-thawani
  * Domain Path:       /languages
  * WC requires at least: 7.0
  * WC tested up to:      9.5
@@ -58,7 +60,7 @@ add_action(
 				static function () {
 					printf(
 						'<div class="error"><p>%s</p></div>',
-						esc_html__( 'Thawani Payment Gateway requires WooCommerce to be installed and active.', 'thawani' )
+						esc_html__( 'Thawani Payment Gateway requires WooCommerce to be installed and active.', 'woocommerce-gateway-thawani' )
 					);
 				}
 			);

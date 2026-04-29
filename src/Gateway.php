@@ -24,8 +24,8 @@ class Gateway extends WC_Payment_Gateway {
 		$this->id                 = self::GATEWAY_ID;
 		$this->icon               = '';
 		$this->has_fields         = true;
-		$this->method_title       = __( 'Thawani Gateway', 'thawani' );
-		$this->method_description = __( 'Accept Visa or MasterCard payments via Thawani.', 'thawani' );
+		$this->method_title       = __( 'Thawani Gateway', 'woocommerce-gateway-thawani' );
+		$this->method_description = __( 'Accept Visa or MasterCard payments via Thawani.', 'woocommerce-gateway-thawani' );
 		$this->supports           = array( 'products', 'refunds' );
 
 		$this->init_form_fields();
@@ -79,82 +79,82 @@ class Gateway extends WC_Payment_Gateway {
 		// (option key: woocommerce_thawani_settings) load without any migration.
 		$this->form_fields = array(
 			'enabled'              => array(
-				'title'   => __( 'Enable/Disable', 'thawani' ),
-				'label'   => __( 'Enable Thawani Gateway', 'thawani' ),
+				'title'   => __( 'Enable/Disable', 'woocommerce-gateway-thawani' ),
+				'label'   => __( 'Enable Thawani Gateway', 'woocommerce-gateway-thawani' ),
 				'type'    => 'checkbox',
 				'default' => 'no',
 			),
 			'title'                => array(
-				'title'       => __( 'Title', 'thawani' ),
+				'title'       => __( 'Title', 'woocommerce-gateway-thawani' ),
 				'type'        => 'text',
-				'description' => __( 'Title shown to the customer at checkout.', 'thawani' ),
-				'default'     => __( 'Visa or MasterCard', 'thawani' ),
+				'description' => __( 'Title shown to the customer at checkout.', 'woocommerce-gateway-thawani' ),
+				'default'     => __( 'Visa or MasterCard', 'woocommerce-gateway-thawani' ),
 				'desc_tip'    => true,
 			),
 			'description'          => array(
-				'title'       => __( 'Description', 'thawani' ),
+				'title'       => __( 'Description', 'woocommerce-gateway-thawani' ),
 				'type'        => 'textarea',
-				'description' => __( 'Description shown to the customer at checkout.', 'thawani' ),
-				'default'     => __( 'Pay using Visa or MasterCard via Thawani Gateway', 'thawani' ),
+				'description' => __( 'Description shown to the customer at checkout.', 'woocommerce-gateway-thawani' ),
+				'default'     => __( 'Pay using Visa or MasterCard via Thawani Gateway', 'woocommerce-gateway-thawani' ),
 			),
 			'testmode'             => array(
-				'title'       => __( 'Test mode', 'thawani' ),
-				'label'       => __( 'Enable Test Mode', 'thawani' ),
+				'title'       => __( 'Test mode', 'woocommerce-gateway-thawani' ),
+				'label'       => __( 'Enable Test Mode', 'woocommerce-gateway-thawani' ),
 				'type'        => 'checkbox',
-				'description' => __( 'Use Thawani UAT credentials.', 'thawani' ),
+				'description' => __( 'Use Thawani UAT credentials.', 'woocommerce-gateway-thawani' ),
 				'default'     => 'yes',
 				'desc_tip'    => true,
 			),
 			'debug_mode'           => array(
-				'title'       => __( 'Debugging', 'thawani' ),
-				'label'       => __( 'Log gateway activity', 'thawani' ),
+				'title'       => __( 'Debugging', 'woocommerce-gateway-thawani' ),
+				'label'       => __( 'Log gateway activity', 'woocommerce-gateway-thawani' ),
 				'type'        => 'checkbox',
-				'description' => __( 'Logs requests/responses to the WooCommerce logger (source: thawani).', 'thawani' ),
+				'description' => __( 'Logs requests/responses to the WooCommerce logger (source: thawani).', 'woocommerce-gateway-thawani' ),
 				'default'     => 'no',
 				'desc_tip'    => true,
 			),
 			'test_publishable_key' => array(
-				'title'   => __( 'UAT Publishable Key', 'thawani' ),
+				'title'   => __( 'UAT Publishable Key', 'woocommerce-gateway-thawani' ),
 				'type'    => 'text',
 				'default' => 'HGvTMLDssJghr9tlN9gr4DVYt0qyBy',
 			),
 			'test_private_key'     => array(
-				'title'   => __( 'UAT Secret Key', 'thawani' ),
+				'title'   => __( 'UAT Secret Key', 'woocommerce-gateway-thawani' ),
 				'type'    => 'text',
 				'default' => 'rRQ26GcsZzoEhbrP2HZvLYDbn9C9et',
 			),
 			'publishable_key'      => array(
-				'title' => __( 'Production Publishable Key', 'thawani' ),
+				'title' => __( 'Production Publishable Key', 'woocommerce-gateway-thawani' ),
 				'type'  => 'text',
 			),
 			'private_key'          => array(
-				'title' => __( 'Production Secret Key', 'thawani' ),
+				'title' => __( 'Production Secret Key', 'woocommerce-gateway-thawani' ),
 				'type'  => 'text',
 			),
 			'use_order_id'         => array(
-				'title'       => __( 'Show Order ID at checkout', 'thawani' ),
-				'label'       => __( 'Show "Order #XXXXXX" instead of items', 'thawani' ),
+				'title'       => __( 'Show Order ID at checkout', 'woocommerce-gateway-thawani' ),
+				'label'       => __( 'Show "Order #XXXXXX" instead of items', 'woocommerce-gateway-thawani' ),
 				'type'        => 'checkbox',
-				'description' => __( 'Avoids per-item rounding issues. Automatically enabled when an item amount drops below 100 baisa.', 'thawani' ),
+				'description' => __( 'Avoids per-item rounding issues. Automatically enabled when an item amount drops below 100 baisa.', 'woocommerce-gateway-thawani' ),
 				'default'     => 'no',
 			),
 			's4d_save_credit_cards' => array(
-				'title'       => __( 'Allow saving cards', 'thawani' ),
-				'description' => __( 'Logged-in customers can save and reuse cards (stored on Thawani).', 'thawani' ),
+				'title'       => __( 'Allow saving cards', 'woocommerce-gateway-thawani' ),
+				'description' => __( 'Logged-in customers can save and reuse cards (stored on Thawani).', 'woocommerce-gateway-thawani' ),
 				'type'        => 'checkbox',
 				'default'     => 'yes',
 			),
 			'webhook_url'           => array(
-				'title'             => __( 'Webhook URL', 'thawani' ),
+				'title'             => __( 'Webhook URL', 'woocommerce-gateway-thawani' ),
 				'type'              => 'text',
-				'description'       => __( 'Optional. Paste this URL into your Thawani portal under Webhooks. Used to sync payment status if the customer closes the page before being redirected back.', 'thawani' ),
+				'description'       => __( 'Optional. Paste this URL into your Thawani portal under Webhooks. Used to sync payment status if the customer closes the page before being redirected back.', 'woocommerce-gateway-thawani' ),
 				'default'           => home_url( '/wc-api/thawani_webhook' ),
 				'custom_attributes' => array( 'readonly' => 'readonly' ),
 			),
 			'webhook_secret'        => array(
-				'title'       => __( 'Webhook Secret', 'thawani' ),
+				'title'       => __( 'Webhook Secret', 'woocommerce-gateway-thawani' ),
 				'type'        => 'password',
-				'description' => __( 'Optional. If set, incoming webhook requests must include a matching Thawani-Signature header (HMAC-SHA256 of the raw body).', 'thawani' ),
+				'description' => __( 'Optional. If set, incoming webhook requests must include a matching Thawani-Signature header (HMAC-SHA256 of the raw body).', 'woocommerce-gateway-thawani' ),
 				'default'     => '',
 				'desc_tip'    => true,
 			),
@@ -166,8 +166,7 @@ class Gateway extends WC_Payment_Gateway {
 	}
 
 	public function payment_fields(): void {
-		$description = wpautop( wp_kses_post( (string) $this->description ) );
-		echo $description;
+		echo wp_kses_post( wpautop( (string) $this->description ) );
 
 		if ( ! $this->save_cards_enabled() ) {
 			return;
@@ -197,7 +196,7 @@ class Gateway extends WC_Payment_Gateway {
 		printf(
 			'<li class="woocommerce-notice"><label><input type="radio" name="thawani_payment_option" value="-1" class="thawani-payment-method"%s> %s</label></li>',
 			empty( $cards ) ? ' checked="checked"' : '',
-			esc_html__( 'Use new/different card', 'thawani' )
+			esc_html__( 'Use new/different card', 'woocommerce-gateway-thawani' )
 		);
 
 		foreach ( $cards as $i => $card ) {
@@ -216,7 +215,7 @@ class Gateway extends WC_Payment_Gateway {
 				esc_html( $last4 ),
 				esc_html( $exp ),
 				esc_attr( $nick ),
-				esc_html__( 'Delete', 'thawani' )
+				esc_html__( 'Delete', 'woocommerce-gateway-thawani' )
 			);
 		}
 
@@ -244,10 +243,10 @@ class Gateway extends WC_Payment_Gateway {
 			'thawani',
 			array(
 				'ajaxurl'         => admin_url( 'admin-ajax.php' ),
-				'_delete'         => __( 'Delete', 'thawani' ),
-				'_delete_confirm' => __( 'Are you sure you want to delete this card [%s]?', 'thawani' ),
-				'_confirm'        => __( 'Confirm', 'thawani' ),
-				'_cancel'         => __( 'Cancel', 'thawani' ),
+				'_delete'         => __( 'Delete', 'woocommerce-gateway-thawani' ),
+				'_delete_confirm' => __( 'Are you sure you want to delete this card [%s]?', 'woocommerce-gateway-thawani' ),
+				'_confirm'        => __( 'Confirm', 'woocommerce-gateway-thawani' ),
+				'_cancel'         => __( 'Cancel', 'woocommerce-gateway-thawani' ),
 			)
 		);
 	}
@@ -255,14 +254,14 @@ class Gateway extends WC_Payment_Gateway {
 	public function process_payment( $order_id ) {
 		$order = wc_get_order( $order_id );
 		if ( ! $order instanceof WC_Order ) {
-			wc_add_notice( __( 'Order not found.', 'thawani' ), 'error' );
+			wc_add_notice( __( 'Order not found.', 'woocommerce-gateway-thawani' ), 'error' );
 			return array( 'result' => 'failure' );
 		}
 
 		$currency       = strtoupper( $order->get_currency() );
 		$has_conversion = has_filter( 'thawani_convert_to_omr' );
 		if ( $currency !== 'OMR' && ! $has_conversion ) {
-			wc_add_notice( __( 'Only Omani Rial is supported.', 'thawani' ), 'error' );
+			wc_add_notice( __( 'Only Omani Rial is supported.', 'woocommerce-gateway-thawani' ), 'error' );
 			return array( 'result' => 'failure' );
 		}
 
@@ -308,6 +307,8 @@ class Gateway extends WC_Payment_Gateway {
 			$payload['customer_id'] = $customer_id;
 		}
 
+		// Nonce is verified by WooCommerce (woocommerce-process_checkout) before this method runs.
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing
 		$selected_card = isset( $_POST['thawani_payment_option'] )
 			? (int) wc_clean( wp_unslash( $_POST['thawani_payment_option'] ) )
 			: -1;
@@ -331,7 +332,7 @@ class Gateway extends WC_Payment_Gateway {
 
 		$session_id = $response['body']['data']['session_id'] ?? '';
 		if ( $session_id === '' ) {
-			wc_add_notice( __( 'Thawani did not return a session id.', 'thawani' ), 'error' );
+			wc_add_notice( __( 'Thawani did not return a session id.', 'woocommerce-gateway-thawani' ), 'error' );
 			return array( 'result' => 'failure' );
 		}
 
@@ -352,14 +353,14 @@ class Gateway extends WC_Payment_Gateway {
 
 		if ( $code === '4003' && stripos( (string) ( $body['description'] ?? '' ), 'not found' ) !== false ) {
 			delete_user_meta( $order->get_user_id(), self::USER_CUSTOMER_ID );
-			wc_add_notice( __( 'Saved customer was invalid. Please try again.', 'thawani' ), 'error' );
+			wc_add_notice( __( 'Saved customer was invalid. Please try again.', 'woocommerce-gateway-thawani' ), 'error' );
 			return;
 		}
 
 		wc_add_notice(
 			sprintf(
 				/* translators: %s: error message */
-				__( 'Payment gateway error: %s', 'thawani' ),
+				__( 'Payment gateway error: %s', 'woocommerce-gateway-thawani' ),
 				wp_json_encode( $body )
 			),
 			'error'
@@ -369,7 +370,7 @@ class Gateway extends WC_Payment_Gateway {
 	private function process_with_saved_card( WC_Order $order, array $payload, int $selected_card, int $total_baisa ): array {
 		$cards = (array) get_user_meta( $order->get_user_id(), self::USER_CARDS_CACHE, true );
 		if ( ! isset( $cards[ $selected_card ]['id'] ) ) {
-			wc_add_notice( __( 'Selected card is no longer available.', 'thawani' ), 'error' );
+			wc_add_notice( __( 'Selected card is no longer available.', 'woocommerce-gateway-thawani' ), 'error' );
 			return array( 'result' => 'failure' );
 		}
 
@@ -383,13 +384,13 @@ class Gateway extends WC_Payment_Gateway {
 
 		$response = $this->api()->create_payment_intent( $intent_payload );
 		if ( ! $response['success'] ) {
-			wc_add_notice( __( 'Could not create payment intent.', 'thawani' ), 'error' );
+			wc_add_notice( __( 'Could not create payment intent.', 'woocommerce-gateway-thawani' ), 'error' );
 			return array( 'result' => 'failure' );
 		}
 
 		$intent_id = $response['body']['data']['id'] ?? '';
 		if ( $intent_id === '' ) {
-			wc_add_notice( __( 'Thawani did not return an intent id.', 'thawani' ), 'error' );
+			wc_add_notice( __( 'Thawani did not return an intent id.', 'woocommerce-gateway-thawani' ), 'error' );
 			return array( 'result' => 'failure' );
 		}
 
@@ -402,7 +403,7 @@ class Gateway extends WC_Payment_Gateway {
 			wc_add_notice(
 				sprintf(
 					/* translators: %s: error message */
-					__( 'Could not confirm payment: %s', 'thawani' ),
+					__( 'Could not confirm payment: %s', 'woocommerce-gateway-thawani' ),
 					wp_json_encode( $confirm['body'] )
 				),
 				'error'
@@ -491,7 +492,7 @@ class Gateway extends WC_Payment_Gateway {
 				$items[ $last ]['unit_amount'] += (int) ceil( $remaining / max( 1, $items[ $last ]['quantity'] ) );
 			} else {
 				$items[] = array(
-					'name'        => Client::trim_product_name( __( 'Other', 'thawani' ) ),
+					'name'        => Client::trim_product_name( __( 'Other', 'woocommerce-gateway-thawani' ) ),
 					'unit_amount' => $remaining,
 					'quantity'    => 1,
 				);
@@ -520,7 +521,7 @@ class Gateway extends WC_Payment_Gateway {
 	private function resolve_email( WC_Order $order ): string {
 		$email = trim( (string) $order->get_billing_email() );
 		if ( ! is_email( $email ) ) {
-			$host  = isset( $_SERVER['HTTP_HOST'] ) ? wp_unslash( $_SERVER['HTTP_HOST'] ) : 'example.com';
+			$host  = isset( $_SERVER['HTTP_HOST'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) ) : 'example.com';
 			$email = 'noemail@' . $host;
 		}
 		return $email;
@@ -560,6 +561,8 @@ class Gateway extends WC_Payment_Gateway {
 	private function record_invoice_map( WC_Order $order, string $client_reference_id, string $session_id ): void {
 		global $wpdb;
 
+		// Custom mapping table preserved from the legacy plugin schema; not cacheable.
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange
 		$wpdb->insert(
 			Installer::table_name(),
 			array(
@@ -576,27 +579,27 @@ class Gateway extends WC_Payment_Gateway {
 	public function process_refund( $order_id, $amount = null, $reason = '' ) {
 		$order = wc_get_order( $order_id );
 		if ( ! $order instanceof WC_Order ) {
-			return new \WP_Error( 'thawani_refund', __( 'Order not found.', 'thawani' ) );
+			return new \WP_Error( 'thawani_refund', __( 'Order not found.', 'woocommerce-gateway-thawani' ) );
 		}
 
 		$total       = (float) wc_format_decimal( $order->get_total(), wc_get_price_decimals() );
 		$refund_amt  = (float) wc_format_decimal( (string) $amount, wc_get_price_decimals() );
 
 		if ( $refund_amt <= 0 ) {
-			return new \WP_Error( 'thawani_refund', __( 'Refund amount must be greater than zero.', 'thawani' ) );
+			return new \WP_Error( 'thawani_refund', __( 'Refund amount must be greater than zero.', 'woocommerce-gateway-thawani' ) );
 		}
 
 		if ( abs( $refund_amt - $total ) > 0.0001 ) {
 			return new \WP_Error(
 				'thawani_refund',
-				__( 'Thawani only supports full refunds. Please refund the full order total.', 'thawani' )
+				__( 'Thawani only supports full refunds. Please refund the full order total.', 'woocommerce-gateway-thawani' )
 			);
 		}
 
 		$logger     = $this->is_debug_mode() ? wc_get_logger() : null;
 		$payment_id = $this->resolve_refund_payment_id( $order, $logger );
 		if ( $payment_id === '' ) {
-			return new \WP_Error( 'thawani_refund', __( 'No Thawani payment id available for this order.', 'thawani' ) );
+			return new \WP_Error( 'thawani_refund', __( 'No Thawani payment id available for this order.', 'woocommerce-gateway-thawani' ) );
 		}
 
 		$metadata = array(
@@ -623,7 +626,7 @@ class Gateway extends WC_Payment_Gateway {
 		if ( ! $response['success'] ) {
 			return new \WP_Error(
 				'thawani_refund',
-				(string) ( $response['body']['description'] ?? __( 'Refund failed.', 'thawani' ) )
+				(string) ( $response['body']['description'] ?? __( 'Refund failed.', 'woocommerce-gateway-thawani' ) )
 			);
 		}
 
@@ -631,9 +634,9 @@ class Gateway extends WC_Payment_Gateway {
 		$order->add_order_note(
 			sprintf(
 				/* translators: 1: Thawani refund id, 2: reason */
-				__( 'Thawani refund processed (id: %1$s). Reason: %2$s', 'thawani' ),
+				__( 'Thawani refund processed (id: %1$s). Reason: %2$s', 'woocommerce-gateway-thawani' ),
 				$refund_id !== '' ? $refund_id : '-',
-				$reason !== '' ? $reason : __( 'Unspecified', 'thawani' )
+				$reason !== '' ? $reason : __( 'Unspecified', 'woocommerce-gateway-thawani' )
 			)
 		);
 

@@ -14,7 +14,10 @@ final class EventController {
 	}
 
 	public function handle(): void {
-		if ( ( $_SERVER['REQUEST_METHOD'] ?? 'GET' ) !== 'POST' ) {
+		// Server-to-server webhook from Thawani; authenticated by HMAC signature, not WP nonce.
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing,WordPress.Security.NonceVerification.Recommended
+		$method = isset( $_SERVER['REQUEST_METHOD'] ) ? strtoupper( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_METHOD'] ) ) ) : 'GET';
+		if ( $method !== 'POST' ) {
 			status_header( 405 );
 			exit;
 		}
@@ -136,12 +139,17 @@ final class EventController {
 	}
 
 	private function verify_signature( string $raw, string $secret ): bool {
-		$header = $_SERVER['HTTP_THAWANI_SIGNATURE'] ?? $_SERVER['HTTP_X_THAWANI_SIGNATURE'] ?? '';
+		$header = '';
+		if ( isset( $_SERVER['HTTP_THAWANI_SIGNATURE'] ) ) {
+			$header = sanitize_text_field( wp_unslash( $_SERVER['HTTP_THAWANI_SIGNATURE'] ) );
+		} elseif ( isset( $_SERVER['HTTP_X_THAWANI_SIGNATURE'] ) ) {
+			$header = sanitize_text_field( wp_unslash( $_SERVER['HTTP_X_THAWANI_SIGNATURE'] ) );
+		}
 		if ( $header === '' ) {
 			return false;
 		}
 		$expected = hash_hmac( 'sha256', $raw, $secret );
-		return hash_equals( $expected, (string) $header );
+		return hash_equals( $expected, $header );
 	}
 
 	private function gateway(): ?Gateway {

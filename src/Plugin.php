@@ -48,7 +48,7 @@ final class Plugin {
 
 	public function load_textdomain(): void {
 		load_plugin_textdomain(
-			'thawani',
+			'woocommerce-gateway-thawani',
 			false,
 			dirname( plugin_basename( WC_GATEWAY_THAWANI_FILE ) ) . '/languages/'
 		);
@@ -63,7 +63,7 @@ final class Plugin {
 		$settings_url = admin_url( 'admin.php?page=wc-settings&tab=checkout&section=thawani' );
 		array_unshift(
 			$links,
-			'<a href="' . esc_url( $settings_url ) . '">' . esc_html__( 'Settings', 'thawani' ) . '</a>'
+			'<a href="' . esc_url( $settings_url ) . '">' . esc_html__( 'Settings', 'woocommerce-gateway-thawani' ) . '</a>'
 		);
 		return $links;
 	}
