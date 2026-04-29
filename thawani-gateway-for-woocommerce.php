@@ -1,7 +1,7 @@
 <?php
 /**
- * Plugin Name:       WooCommerce Thawani Payment Gateway
- * Plugin URI:        https://www.s4d.om/store/software
+ * Plugin Name:       Thawani Payment Gateway for WooCommerce
+ * Plugin URI:        https://github.com/phpawcom/thawani-gateway-for-woocommerce
  * Description:       Accept payments via Thawani (Visa / MasterCard) using API v2.
  * Version:           2.0.0
  * Requires at least: 6.2
@@ -11,7 +11,7 @@
  * Author URI:        https://www.s4d.om
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       woocommerce-gateway-thawani
+ * Text Domain:       thawani-gateway-for-woocommerce
  * Domain Path:       /languages
  * WC requires at least: 7.0
  * WC tested up to:      9.5
@@ -60,7 +60,7 @@ add_action(
 				static function () {
 					printf(
 						'<div class="error"><p>%s</p></div>',
-						esc_html__( 'Thawani Payment Gateway requires WooCommerce to be installed and active.', 'woocommerce-gateway-thawani' )
+						esc_html__( 'Thawani Payment Gateway requires WooCommerce to be installed and active.', 'thawani-gateway-for-woocommerce' )
 					);
 				}
 			);

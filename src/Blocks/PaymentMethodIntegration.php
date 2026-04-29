@@ -37,7 +37,7 @@ final class PaymentMethodIntegration extends AbstractPaymentMethodType {
 		);
 
 		if ( function_exists( 'wp_set_script_translations' ) ) {
-			wp_set_script_translations( $handle, 'woocommerce-gateway-thawani', WC_GATEWAY_THAWANI_PATH . 'languages' );
+			wp_set_script_translations( $handle, 'thawani-gateway-for-woocommerce', WC_GATEWAY_THAWANI_PATH . 'languages' );
 		}
 
 		return array( $handle );
@@ -45,8 +45,8 @@ final class PaymentMethodIntegration extends AbstractPaymentMethodType {
 
 	public function get_payment_method_data() {
 		return array(
-			'title'       => $this->get_setting( 'title', __( 'Visa or MasterCard', 'woocommerce-gateway-thawani' ) ),
-			'description' => $this->get_setting( 'description', __( 'Pay using Visa or MasterCard via Thawani Gateway', 'woocommerce-gateway-thawani' ) ),
+			'title'       => $this->get_setting( 'title', __( 'Visa or MasterCard', 'thawani-gateway-for-woocommerce' ) ),
+			'description' => $this->get_setting( 'description', __( 'Pay using Visa or MasterCard via Thawani Gateway', 'thawani-gateway-for-woocommerce' ) ),
 			'supports'    => $this->get_supported_features(),
 			'testmode'    => filter_var( $this->get_setting( 'testmode', false ), FILTER_VALIDATE_BOOLEAN ),
 		);
