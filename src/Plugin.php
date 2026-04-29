@@ -33,7 +33,7 @@ final class Plugin {
 		add_filter( 'woocommerce_payment_gateways', array( $this, 'register_gateway' ) );
 
 		add_filter(
-			'plugin_action_links_' . plugin_basename( WC_GATEWAY_THAWANI_FILE ),
+			'plugin_action_links_' . plugin_basename( THAWANI_FILE ),
 			array( $this, 'plugin_action_links' )
 		);
 

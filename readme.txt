@@ -4,7 +4,7 @@ Tags: woocommerce, payment-gateway, thawani, oman, omr
 Requires at least: 6.2
 Tested up to: 6.9
 Requires PHP: 8.1
-Stable tag: 2.0.2
+Stable tag: 2.0.3
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -46,6 +46,10 @@ Enable Test mode in the gateway settings. The form ships with public Thawani UAT
 
 == Changelog ==
 
+= 2.0.3 =
+* Renamed plugin constants from `WC_GATEWAY_THAWANI_*` to `THAWANI_*` to clear Plugin Check warnings about the WooCommerce-reserved `WC_` prefix.
+* Added a `phpcs.xml.dist` declaring the plugin's accepted prefixes and text domain so coding-standard scans recognize correctly-prefixed hooks.
+
 = 2.0.2 =
 * Aligned the plugin's text domain with the WordPress.org slug `thawani-payment-gateway-for-woocommerce`. Translation files have been renamed accordingly.
 
@@ -61,6 +65,9 @@ Enable Test mode in the gateway settings. The form ships with public Thawani UAT
 * WooCommerce Blocks and HPOS compatibility.
 
 == Upgrade Notice ==
+
+= 2.0.3 =
+Renames the plugin's public constants from `WC_GATEWAY_THAWANI_*` to `THAWANI_*` (the `WC_` prefix is reserved by WooCommerce). If you reference these constants from third-party code, update the names.
 
 = 2.0.2 =
 Aligns the plugin text domain with the WordPress.org slug. Required for translation loading on WordPress.org listings.

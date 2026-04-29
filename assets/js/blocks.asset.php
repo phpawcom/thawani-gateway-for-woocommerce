@@ -7,5 +7,5 @@ return array(
 		'wp-html-entities',
 		'wp-i18n',
 	),
-	'version'      => defined( 'WC_GATEWAY_THAWANI_VERSION' ) ? WC_GATEWAY_THAWANI_VERSION : '2.0.0',
+	'version'      => defined( 'THAWANI_VERSION' ) ? THAWANI_VERSION : '2.0.0',
 );

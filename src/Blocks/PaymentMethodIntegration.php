@@ -22,22 +22,22 @@ final class PaymentMethodIntegration extends AbstractPaymentMethodType {
 
 	public function get_payment_method_script_handles() {
 		$handle    = 'wc-thawani-blocks';
-		$asset_path = WC_GATEWAY_THAWANI_PATH . 'assets/js/blocks.asset.php';
+		$asset_path = THAWANI_PATH . 'assets/js/blocks.asset.php';
 		$asset      = is_readable( $asset_path ) ? require $asset_path : array(
 			'dependencies' => array( 'wc-blocks-registry', 'wc-settings', 'wp-element', 'wp-html-entities', 'wp-i18n' ),
-			'version'      => WC_GATEWAY_THAWANI_VERSION,
+			'version'      => THAWANI_VERSION,
 		);
 
 		wp_register_script(
 			$handle,
-			WC_GATEWAY_THAWANI_URL . 'assets/js/blocks.js',
+			THAWANI_URL . 'assets/js/blocks.js',
 			$asset['dependencies'],
 			$asset['version'],
 			true
 		);
 
 		if ( function_exists( 'wp_set_script_translations' ) ) {
-			wp_set_script_translations( $handle, 'thawani-payment-gateway-for-woocommerce', WC_GATEWAY_THAWANI_PATH . 'languages' );
+			wp_set_script_translations( $handle, 'thawani-payment-gateway-for-woocommerce', THAWANI_PATH . 'languages' );
 		}
 
 		return array( $handle );

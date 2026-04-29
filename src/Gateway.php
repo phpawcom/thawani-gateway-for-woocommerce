@@ -232,9 +232,9 @@ class Gateway extends WC_Payment_Gateway {
 
 		wp_enqueue_script(
 			'thawani-checkout',
-			WC_GATEWAY_THAWANI_URL . 'assets/js/checkout.js',
+			THAWANI_URL . 'assets/js/checkout.js',
 			array( 'jquery' ),
-			WC_GATEWAY_THAWANI_VERSION,
+			THAWANI_VERSION,
 			true
 		);
 
