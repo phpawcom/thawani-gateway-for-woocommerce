@@ -17,7 +17,7 @@ final class CardController {
 		check_ajax_referer( 'thawani_cards', 'nonce' );
 
 		if ( ! is_user_logged_in() ) {
-			wp_send_json_error( array( 'message' => __( 'Not allowed.', 'thawani-gateway-for-woocommerce' ) ), 403 );
+			wp_send_json_error( array( 'message' => __( 'Not allowed.', 'thawani-payment-gateway-for-woocommerce' ) ), 403 );
 		}
 
 		$user_id = get_current_user_id();
@@ -25,13 +25,13 @@ final class CardController {
 
 		$cards = (array) get_user_meta( $user_id, Gateway::USER_CARDS_CACHE, true );
 		if ( ! isset( $cards[ $index ]['id'] ) ) {
-			wp_send_json_error( array( 'message' => __( 'Card not found.', 'thawani-gateway-for-woocommerce' ) ), 404 );
+			wp_send_json_error( array( 'message' => __( 'Card not found.', 'thawani-payment-gateway-for-woocommerce' ) ), 404 );
 		}
 
 		$gateways = WC()->payment_gateways()->payment_gateways();
 		$gateway  = $gateways[ Gateway::GATEWAY_ID ] ?? null;
 		if ( ! $gateway instanceof Gateway ) {
-			wp_send_json_error( array( 'message' => __( 'Gateway unavailable.', 'thawani-gateway-for-woocommerce' ) ), 503 );
+			wp_send_json_error( array( 'message' => __( 'Gateway unavailable.', 'thawani-payment-gateway-for-woocommerce' ) ), 503 );
 		}
 
 		$gateway->api()->delete_payment_method( (string) $cards[ $index ]['id'] );

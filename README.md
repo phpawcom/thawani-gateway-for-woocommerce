@@ -29,7 +29,7 @@ The legacy database table (`{prefix}thawani_invoice_map`) and the legacy setting
 
 ## Installation
 
-1. Download or clone this repository into `wp-content/plugins/thawani-gateway-for-woocommerce`.
+1. Download or clone this repository into `wp-content/plugins/thawani-payment-gateway-for-woocommerce`.
 2. Activate **Thawani Payment Gateway for WooCommerce** from the Plugins screen.
 3. Go to **WooCommerce → Settings → Payments → Thawani Gateway** and enter your keys.
 4. (Optional) Copy the **Webhook URL** shown in settings into your Thawani portal so payment status reconciles when customers don't return to the site.
