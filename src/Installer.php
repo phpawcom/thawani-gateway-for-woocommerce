@@ -30,13 +30,13 @@ final class Installer {
 	private static function create_tables(): void {
 		global $wpdb;
 
-		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-
 		$table   = self::table_name();
 		$charset = $wpdb->get_charset_collate();
 
 		// Schema kept identical to the legacy plugin so existing rows remain queryable.
-		$sql = "CREATE TABLE {$table} (
+		// dbDelta() is avoided because it misparses the reserved-word column `key` as an
+		// index declaration and emits warnings during activation.
+		$sql = "CREATE TABLE IF NOT EXISTS {$table} (
 			tiid int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 			invoiceid int(11) NOT NULL DEFAULT 0,
 			thawani_invoiceid int(11) NOT NULL DEFAULT 0,
@@ -49,6 +49,7 @@ final class Installer {
 			PRIMARY KEY  (tiid)
 		) {$charset};";
 
-		dbDelta( $sql );
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange,WordPress.DB.PreparedSQL.NotPrepared
+		$wpdb->query( $sql );
 	}
 }
