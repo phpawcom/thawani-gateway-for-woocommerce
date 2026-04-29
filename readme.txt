@@ -2,7 +2,7 @@
 Contributors: phpawcom, s4d
 Tags: woocommerce, payment-gateway, thawani, oman, omr
 Requires at least: 6.2
-Tested up to: 6.8
+Tested up to: 6.9
 Requires PHP: 8.1
 Stable tag: 2.0.0
 License: GPL-2.0-or-later
@@ -21,7 +21,7 @@ Features:
 * Refunds — full refunds from the WooCommerce admin (Thawani does not support partial refunds).
 * Webhooks — optional server-to-server endpoint so payment status syncs even if the customer closes the page before redirect. Optional HMAC-SHA256 signature verification.
 * WooCommerce Blocks support and HPOS compatibility.
-* Currency conversion hook (thawani_convert_to_omr) for non-OMR stores.
+* Currency conversion hook (thawani_gateway_convert_to_omr) for non-OMR stores.
 
 == Installation ==
 

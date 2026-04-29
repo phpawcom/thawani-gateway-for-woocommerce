@@ -244,6 +244,7 @@ class Gateway extends WC_Payment_Gateway {
 			array(
 				'ajaxurl'         => admin_url( 'admin-ajax.php' ),
 				'_delete'         => __( 'Delete', 'thawani-gateway-for-woocommerce' ),
+                /* translators: %s: card ending */
 				'_delete_confirm' => __( 'Are you sure you want to delete this card [%s]?', 'thawani-gateway-for-woocommerce' ),
 				'_confirm'        => __( 'Confirm', 'thawani-gateway-for-woocommerce' ),
 				'_cancel'         => __( 'Cancel', 'thawani-gateway-for-woocommerce' ),
@@ -259,7 +260,7 @@ class Gateway extends WC_Payment_Gateway {
 		}
 
 		$currency       = strtoupper( $order->get_currency() );
-		$has_conversion = has_filter( 'thawani_convert_to_omr' );
+		$has_conversion = has_filter( 'thawani_gateway_convert_to_omr' ) || has_filter( 'thawani_convert_to_omr' );
 		if ( $currency !== 'OMR' && ! $has_conversion ) {
 			wc_add_notice( __( 'Only Omani Rial is supported.', 'thawani-gateway-for-woocommerce' ), 'error' );
 			return array( 'result' => 'failure' );
@@ -309,9 +310,7 @@ class Gateway extends WC_Payment_Gateway {
 
 		// Nonce is verified by WooCommerce (woocommerce-process_checkout) before this method runs.
 		// phpcs:ignore WordPress.Security.NonceVerification.Missing
-		$selected_card = isset( $_POST['thawani_payment_option'] )
-			? (int) wc_clean( wp_unslash( $_POST['thawani_payment_option'] ) )
-			: -1;
+		$selected_card = isset( $_POST['thawani_payment_option'] ) ? (int) $_POST['thawani_payment_option'] : -1;
 
 		$pay_with_saved_card = $customer_id !== '' && $selected_card >= 0;
 
@@ -512,9 +511,17 @@ class Gateway extends WC_Payment_Gateway {
 	}
 
 	private function convert_amount( float $amount, string $currency ): float {
+		$amount = (float) apply_filters( 'thawani_gateway_convert_to_omr', $amount, $currency );
+
 		if ( has_filter( 'thawani_convert_to_omr' ) ) {
-			return (float) apply_filters( 'thawani_convert_to_omr', $amount, $currency );
+			$amount = (float) apply_filters_deprecated(
+				'thawani_convert_to_omr',
+				array( $amount, $currency ),
+				'2.0.0',
+				'thawani_gateway_convert_to_omr'
+			);
 		}
+
 		return $amount;
 	}
 

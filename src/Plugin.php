@@ -30,8 +30,6 @@ final class Plugin {
 
 		Installer::maybe_upgrade();
 
-		add_action( 'init', array( $this, 'load_textdomain' ) );
-
 		add_filter( 'woocommerce_payment_gateways', array( $this, 'register_gateway' ) );
 
 		add_filter(
@@ -44,14 +42,6 @@ final class Plugin {
 		( new CardController() )->register();
 		( new WebhookController() )->register();
 		( new EventController() )->register();
-	}
-
-	public function load_textdomain(): void {
-		load_plugin_textdomain(
-			'thawani-gateway-for-woocommerce',
-			false,
-			dirname( plugin_basename( WC_GATEWAY_THAWANI_FILE ) ) . '/languages/'
-		);
 	}
 
 	public function register_gateway( array $gateways ): array {

@@ -21,7 +21,7 @@ final class CardController {
 		}
 
 		$user_id = get_current_user_id();
-		$index   = isset( $_REQUEST['id'] ) ? (int) wp_unslash( $_REQUEST['id'] ) : -1;
+		$index   = isset( $_REQUEST['id'] ) ? (int) $_REQUEST['id'] : -1;
 
 		$cards = (array) get_user_meta( $user_id, Gateway::USER_CARDS_CACHE, true );
 		if ( ! isset( $cards[ $index ]['id'] ) ) {

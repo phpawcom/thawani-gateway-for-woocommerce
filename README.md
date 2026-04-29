@@ -16,7 +16,7 @@ The legacy database table (`{prefix}thawani_invoice_map`) and the legacy setting
 - **Webhooks** — optional server-to-server event endpoint at `/wc-api/thawani_webhook` so payment status syncs even if the customer closes the page before being redirected back. Optional HMAC-SHA256 signature verification.
 - **WooCommerce Blocks** — supports the new block-based checkout in addition to the classic shortcode checkout.
 - **HPOS compatible** — declares compatibility with WooCommerce's High-Performance Order Storage and the Cart/Checkout Blocks feature.
-- **Currency conversion hook** — non-OMR stores can hook `thawani_convert_to_omr` to convert amounts at checkout time.
+- **Currency conversion hook** — non-OMR stores can hook `thawani_gateway_convert_to_omr` to convert amounts at checkout time.
 - **Vendor metadata** — when Dokan is installed, vendor IDs/names are included in the Thawani metadata payload.
 - **Debug logging** — toggleable per-request logging via the WooCommerce logger (source: `thawani`).
 
