@@ -4,7 +4,7 @@ Tags: woocommerce, payment-gateway, thawani, oman, omr
 Requires at least: 6.2
 Tested up to: 6.9
 Requires PHP: 8.1
-Stable tag: 2.0.0
+Stable tag: 2.0.1
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -46,6 +46,11 @@ Enable Test mode in the gateway settings. The form ships with public Thawani UAT
 
 == Changelog ==
 
+= 2.0.1 =
+* Activation no longer emits "unexpected output" warnings; the invoice-map table is now created via a direct query that bypasses dbDelta's reserved-word column parser.
+* Plugin Check findings addressed: removed the discouraged `load_plugin_textdomain()` call (WP auto-loads bundled translations), tightened input casts at checkout and in the saved-card AJAX handler, and prefixed the currency conversion filter as `thawani_gateway_convert_to_omr` (the legacy `thawani_convert_to_omr` continues to work via `apply_filters_deprecated`).
+* Bumped tested-up-to header to WordPress 6.9.
+
 = 2.0.0 =
 * First open-source release. Rewrite of the paid plugin against Thawani's v1 API.
 * Refunds now resolve the real payment_id via GET /payments before calling /refunds.
@@ -53,6 +58,9 @@ Enable Test mode in the gateway settings. The form ships with public Thawani UAT
 * WooCommerce Blocks and HPOS compatibility.
 
 == Upgrade Notice ==
+
+= 2.0.1 =
+Fixes a "1610 characters of unexpected output during activation" warning and clears all Plugin Check findings. The legacy `thawani_convert_to_omr` filter is preserved via a deprecation shim; please migrate to `thawani_gateway_convert_to_omr`.
 
 = 2.0.0 =
 First open-source release. Existing settings and historical data are preserved without manual migration.

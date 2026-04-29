@@ -3,7 +3,7 @@
  * Plugin Name:       Thawani Payment Gateway for WooCommerce
  * Plugin URI:        https://github.com/phpawcom/thawani-gateway-for-woocommerce
  * Description:       Accept payments via Thawani (Visa / MasterCard) using API v2.
- * Version:           2.0.0
+ * Version:           2.0.1
  * Requires at least: 6.2
  * Requires PHP:      8.1
  * Tested up to:      6.9
@@ -26,7 +26,7 @@ if ( defined( 'WC_GATEWAY_THAWANI_FILE' ) ) {
 define( 'WC_GATEWAY_THAWANI_FILE', __FILE__ );
 define( 'WC_GATEWAY_THAWANI_PATH', plugin_dir_path( __FILE__ ) );
 define( 'WC_GATEWAY_THAWANI_URL', plugin_dir_url( __FILE__ ) );
-define( 'WC_GATEWAY_THAWANI_VERSION', '2.0.0' );
+define( 'WC_GATEWAY_THAWANI_VERSION', '2.0.1' );
 
 spl_autoload_register(
 	static function ( $class ) {

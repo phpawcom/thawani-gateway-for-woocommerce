@@ -517,7 +517,7 @@ class Gateway extends WC_Payment_Gateway {
 			$amount = (float) apply_filters_deprecated(
 				'thawani_convert_to_omr',
 				array( $amount, $currency ),
-				'2.0.0',
+				'2.0.1',
 				'thawani_gateway_convert_to_omr'
 			);
 		}
